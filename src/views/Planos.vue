@@ -2,15 +2,15 @@
   <div>
     <div>
       <v-alert v-model="salvo" border="left" close-text="Close Alert" class="text-center" color="info" dark dismissible
-        transition="scale-transition">PRODUTO CADASTRADO COM SUCESSO!</v-alert>
+        transition="scale-transition">PLANO CADASTRADO COM SUCESSO!</v-alert>
     </div>
     <div>
       <v-alert v-model="editado" border="left" close-text="Close Alert" class="text-center" color="info" dark
-        dismissible transition="scale-transition">PRODUTO EDITADO COM SUCESSO!</v-alert>
+        dismissible transition="scale-transition">PLANO EDITADO COM SUCESSO!</v-alert>
     </div>
     <div>
       <v-alert v-model="naoCadastrado" border="left" close-text="Close Alert" class="text-center" color="red" dark
-        dismissible transition="scale-transition">NÃO FOI POSSÍVEL CADASTRAR O PRODUTO, PREENCHA OS CAMPOS VAZIOS!
+        dismissible transition="scale-transition">NÃO FOI POSSÍVEL CADASTRAR O PLANO, PREENCHA OS CAMPOS VAZIOS!
       </v-alert>  
     </div>
 
@@ -18,28 +18,21 @@
       <v-container>
         <v-row>
             <v-col cols="12" md="6">
-              <v-text-field v-model="nome" :rules="usernameRules" :counter="100" label="Plano" required></v-text-field>
+              <v-text-field v-model="planoname" :rules="usernameRules" :counter="100" label="Plano" required></v-text-field>
             </v-col>    
 
             <v-col cols="12" md="6">
               <v-text-field v-model="descricao" :rules="usernameRules" :counter="100" label="Descrição do plano" required></v-text-field>
             </v-col>
 
-         <!-- <v-col cols="12" md="6">
-            <v-text-field v-model="marca" :rules="usernameRules" :counter="50" label="Marca" required></v-text-field>
-          </v-col> -->
+         
           <v-col cols="12" md="6">
             <v-text-field v-model="valor" :rules="usernameRules" :counter="10" label="Valor" required type="number"></v-text-field>
           </v-col>
           <v-col cols="12" md="6">
-            <v-text-field v-model="quantidade" :rules="usernameRules" label="Taxa" required type="number"></v-text-field>
+            <v-text-field v-model="taxa" :rules="usernameRules" label="Taxa" required type="text"></v-text-field>
           </v-col>
-          <!-- <v-col class="d-flex" cols="12" sm="6">
-            <v-select v-model="setor" item-text="setor" label="setor" return-object></v-select>
-          </v-col> -->
-          <!-- <v-col cols="12" md="12">
-            <v-text-field v-model="imagem" :rules="usernameRules" :counter="200" label="Link da imagem do produto" required></v-text-field>
-          </v-col> -->
+          
         </v-row>
         
 
@@ -54,30 +47,24 @@
         <v-list>
           <v-list-item class="text-start title">
             <v-col md="2">
-              <v-list-item-title>Nome</v-list-item-title>​
+              <v-list-item-title>Plano</v-list-item-title>​
             </v-col>
 
-            <v-col md="2">
-              <v-list-item-title>Marca</v-list-item-title>​
+            <v-col md="3">
+              <v-list-item-title>Descrição</v-list-item-title>​
             </v-col>
 
-            <v-col md="2" class="mb-8">
+            <v-col md="1" class="mb-8">
               <v-list-item-avatar>
-                <v-list-item-title>Img</v-list-item-title>
+                <v-list-item-title>Valor</v-list-item-title>
               </v-list-item-avatar>
             </v-col>
 
-            <v-col md="1">
-              <v-list-item-title>Valor</v-list-item-title>​
+            <v-col md="4">
+              <v-list-item-title>Taxa</v-list-item-title>​
             </v-col>
 
-            <v-col md="1" >
-              <v-list-item-title>Setor</v-list-item-title>​
-            </v-col>
-
-            <v-col md="1" >
-              <v-list-item-title>Qtd</v-list-item-title>​
-            </v-col>
+           
 
             <v-col md="1">
               <v-list-item-title>Status</v-list-item-title>​
@@ -87,42 +74,42 @@
             </v-col>
           </v-list-item>
 
-          <v-list-item v-for="produto in produtos" :key="produto.title" class="text-start">
+          <v-list-item v-for="plano in planos" :key="plano.title" class="text-start">
 
             <v-col md="2">
-              <v-list-item-title v-text="produto.nome"></v-list-item-title>​
+              <v-list-item-title v-text="plano.planoname"></v-list-item-title>​
             </v-col>
 
             <v-col md="2">
-              <v-list-item-title v-text="produto.marca"></v-list-item-title>​
+              <v-list-item-title v-text="plano.descricao"></v-list-item-title>​
             </v-col>
 
-            <v-col md="2">
+            <!-- <v-col md="2">
               <v-list-item-avatar>
                 <v-img :src="produto.imagem"></v-img>
               </v-list-item-avatar>
+            </v-col> -->
+
+            <v-col md="1">
+              <v-list-item-title>R$ {{(plano.valor).toFixed(2)}}</v-list-item-title>​
             </v-col>
 
             <v-col md="1">
-              <v-list-item-title>R$ {{(produto.valor).toFixed(2)}}</v-list-item-title>​
+              <v-list-item-title v-text="plano.taxa"></v-list-item-title>​
             </v-col>
 
-            <v-col md="1">
-              <v-list-item-title v-text="produto.setor"></v-list-item-title>​
-            </v-col>
-
-            <v-col md="1">
+            <!-- <v-col md="1">
               <v-list-item-title v-text="produto.quantidade"></v-list-item-title>​
-            </v-col>
+            </v-col> -->
 
-            <v-col md="1">
+            <!-- <v-col md="1">
               <v-btn icon @click="statusProduto(produto)">
                 <v-icon v-if="produto.produtoDisponivel">{{produtoDisponivel}}</v-icon>
                 <v-icon v-else>{{produtoIndisponvel}}</v-icon>                
               </v-btn>
-            </v-col>
+            </v-col> -->
             <v-col md="1">
-              <v-btn icon @click="editarProdutos(produto)">
+              <v-btn icon @click="editarProdutos(plano)">
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
             </v-col>
@@ -137,18 +124,16 @@
   // import HttpRequestUtil from "@/util/HttpRequestUtil";
   export default {
     data: () => ({
-      nome: "",
-      marca: "",
-      valor: "",
-      quantidade: "",
-      imagem: "",
+      planoname: "",
       descricao: "",
-      setor: "",
+      valor: "",
+      taxa: "",
+     
       
-      produtoDisponivel: "mdi-cart",
-      produtoIndisponvel: "mdi-cart-off",
-      produtos: [],     
-      produtoEditado: null,
+      planoDisponivel: "mdi-cart",
+      planoIndisponvel: "mdi-cart-off",
+      planos: [],     
+      planoEditado: null,
       disponivel: true,
       salvo: false,
       editado: false,
@@ -159,43 +144,44 @@
       salvar() {
         let ehvalido = this.validar();
         if (ehvalido) {
-          if (this.produtoEditado == null) {
-            let produto = {};
+          if (this.planoEditado == null) {
+            let plano = {};
  
-            produto.nome = this.nome
-            produto.marca = this.marca
-            produto.valor = parseFloat(this.valor);
-            produto.imagem = this.imagem;
-            produto.setor = this.setor;
-            produto.quantidade = parseFloat(this.quantidade);
-            produto.status = this.disponivel
+            plano.planoname = this.planoname
+            plano.descricao = this.descricao
+            plano.valor = parseFloat(this.valor);
+            plano.taxa = this.taxa;
+            // produto.setor = this.setor;
+            // produto.quantidade = parseFloat(this.quantidade);
+            // produto.status = this.disponivel
             // HttpRequestUtil.adicionarProduto(produto).then(produto => {
             //   this.produtos.push(produto);
             // });
             this.salvo = true;
           } else {
-            this.produtoEditado.nome = this.nome
-            this.produtoEditado.marca = this.marca
-            this.produtoEditado.valor = parseFloat(this.valor);
-            this.produtoEditado.quantidade = parseFloat(this.quantidade);
-            this.produtoEditado.imagem = this.imagem;
-            this.produtoEditado.setor = this.setor;
+            this.planoEditado.planoname = this.planoname
+            this.planoEditado.descricao = this.descricao
+            this.planoEditado.valor = parseFloat(this.valor);
+            // this.planoEditado.quantidade = parseFloat(this.quantidade);
+            this.planoEditado.taxa = this.taxa;
+            // this.produtoEditado.setor = this.setor;
             // HttpRequestUtil.editarProduto(this.produtoEditado).then(
             //   produtos => {}
             // );
             this.editado = true;
-            this.produtoEditado = null;
+            this.planoEditado = null;
           }
           this.limparCampos();
         }
       },
       limparCampos() {
-        this.nome
+        this.planoname = ""
+        this.descricao = ""
         this.valor = ""
-        this.quantidade = ""
-        this.imagem = ""
-        this.marca = ""
-        this.setor = this.setor;
+        this.taxa = ""
+        // this.imagem = ""
+        // this.marca = ""
+        // this.setor = this.setor;
       },
       // buscarProdutos() {
       //   HttpRequestUtil.buscarProdutos().then(produtos => {
@@ -204,25 +190,23 @@
       // },
       validar() {
         if (
-          this.nome == "" ||
-          this.marca == "" ||
-          this.valor == "" ||
-          this.quantidade == "" ||
-          this.imagem == "" ||
+          this.planoname == "" ||
           this.descricao == "" ||
-          this.setor == null
+          this.valor == "" ||
+          this.taxa == "" 
+         
         ) {
           this.naoCadastrado = true;
           return false;
         }
         return true;
       },
-      editarProduto(produto) {
-        this.produtoEditado = produto;
-        this.valor = parseFloat(produto.valor);
-        this.descricao = produto.descricao;
-        this.quantidade = parseFloat(produto.quantidade);
-        this.imagem = produto.imagem;
+      editarProduto(plano) {
+        this.planoEditado = plano;
+        this.valor = parseFloat(plano.valor);
+        this.descricao = plano.descricao;
+        // this.quantidade = parseFloat(plano.quantidade);
+        this.taxa = plano.taxa;
       },
      
       // statusProduto(produto) {
@@ -233,8 +217,8 @@
       //   });
       // }
     },
-    mounted() {
-      this.buscarProdutos();
-    }
+    // mounted() {
+    //   this.buscarProdutos();
+    // }
   };
 </script>
