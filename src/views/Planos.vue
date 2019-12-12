@@ -132,17 +132,22 @@
       
       planoDisponivel: "mdi-cart",
       planoIndisponvel: "mdi-cart-off",
+      
       planos: [],     
+      
       planoEditado: null,
+      
       disponivel: true,
       salvo: false,
       editado: false,
       naoCadastrado: false,
-      usernameRules: [v => !!v || "Campo preenchido é obrigatório"]
+     
+     usernameRules: [v => !!v || "Campo preenchido é obrigatório"]
     }),
     methods: {
       salvar() {
         let ehvalido = this.validar();
+        
         if (ehvalido) {
           if (this.planoEditado == null) {
             let plano = {};
@@ -161,15 +166,15 @@
           } else {
             this.planoEditado.planoname = this.planoname
             this.planoEditado.descricao = this.descricao
-            this.planoEditado.valor = parseFloat(this.valor);
+            this.planoEditado.valor = parseFloat(this.valor)
             // this.planoEditado.quantidade = parseFloat(this.quantidade);
-            this.planoEditado.taxa = this.taxa;
+            this.planoEditado.taxa = this.taxa
             // this.produtoEditado.setor = this.setor;
             // HttpRequestUtil.editarProduto(this.produtoEditado).then(
             //   produtos => {}
             // );
-            this.editado = true;
-            this.planoEditado = null;
+            this.editado = true
+            this.planoEditado = null
           }
           this.limparCampos();
         }
@@ -203,6 +208,7 @@
       },
       editarProduto(plano) {
         this.planoEditado = plano;
+        
         this.valor = parseFloat(plano.valor);
         this.descricao = plano.descricao;
         // this.quantidade = parseFloat(plano.quantidade);

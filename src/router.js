@@ -5,6 +5,7 @@ import Planos from './views/Planos.vue'
 import Central from './views/Central.vue'
 
 Vue.use(Router)
+window.Vue = Vue
 
 export default new Router({
   mode: 'history',
