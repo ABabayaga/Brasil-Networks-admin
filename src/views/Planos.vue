@@ -167,7 +167,7 @@
 </template>
 
 <script>
-// import HttpRequestUtil from "@/util/HttpRequestUtil";
+import HttpRequestUtil from "@/util/HttpRequestUtil"
 export default {
   data: () => ({
     indiceTop: 0,
@@ -196,41 +196,42 @@ export default {
       this.indiceTop++;
       this.plano = {};
     },
-    salvar() {
-      let ehvalido = this.validar();
-      if (ehvalido) {
-        if (this.planoEditado == null) {
-          let plano = {};
+    // salvar() {
+    //   let ehvalido = this.validar();
+    //   if (ehvalido) {
+    //     if (this.planoEditado == null) {
+    //       let plano = {};
 
-          this.planos[this.indiceTop].planoname = this.planoname;
-          this.planos[this.indiceTop].descricao = this.descricao;
-          this.planos[this.indiceTop].valor = parseFloat(this.valor);
-          this.planos[this.indiceTop].taxa = this.taxa;
-          this.indiceTop++;
-          // produto.setor = this.setor;
-          // produto.quantidade = parseFloat(this.quantidade);
-          // produto.status = this.disponivel
-          // HttpRequestUtil.adicionarProduto(produto).then(produto => {
-          //   this.produtos.push(produto);
-          // });
-          this.salvo = true;
-          this.limparCampos();
-        } else {
-          this.planoEditado.planoname = this.planoname;
-          this.planoEditado.descricao = this.descricao;
-          this.planoEditado.valor = parseFloat(this.valor);
-          // this.planoEditado.quantidade = parseFloat(this.quantidade);
-          this.planoEditado.taxa = this.taxa;
-          // this.produtoEditado.setor = this.setor;
-          // HttpRequestUtil.editarProduto(this.produtoEditado).then(
-          //   produtos => {}
-          // );
-          this.editado = true;
-          this.planoEditado = null;
-        }
-      }
-      console.log(this.planos);
-    },
+    //       this.planos[this.indiceTop].planoname = this.planoname;
+    //       this.planos[this.indiceTop].descricao = this.descricao;
+    //       this.planos[this.indiceTop].valor = parseFloat(this.valor);
+    //       this.planos[this.indiceTop].taxa = this.taxa;
+    //        this.planos[this.indiceTop].status = this.disponivel
+    //       this.indiceTop++;
+    //       // produto.setor = this.setor;
+    //       // produto.quantidade = parseFloat(this.quantidade);
+         
+    //       HttpRequestUtil.adicionarPlanos(plano).then(plano => {
+    //         this.planos.push(plano);
+    //       });
+    //       this.salvo = true;
+    //       this.limparCampos();
+    //     } else {
+    //       this.planoEditado.planoname = this.planoname;
+    //       this.planoEditado.descricao = this.descricao;
+    //       this.planoEditado.valor = parseFloat(this.valor);
+    //       // this.planoEditado.quantidade = parseFloat(this.quantidade);
+    //       this.planoEditado.taxa = this.taxa;
+    //       // this.produtoEditado.setor = this.setor;
+    //       HttpRequestUtil.editarPlanos(this.planoEditado).then(
+    //         planos => {}
+    //       );
+    //       this.editado = true;
+    //       this.planoEditado = null;
+    //     }
+    //   }
+    //   console.log(this.planos);
+    // },
     limparCampos() {
       this.planoname = "";
       this.descricao = "";
@@ -240,11 +241,11 @@ export default {
       // this.marca = ""
       // this.setor = this.setor;
     },
-    // buscarProdutos() {
-    //   HttpRequestUtil.buscarProdutos().then(produtos => {
-    //     this.produtos = produtos;
-    //   });
-    // },
+    buscarPlanos() {
+      HttpRequestUtil.buscarPlanos().then(planos => {
+        this.planos = planos;
+      });
+    },
     validar() {
       if (
         this.planoname == "" ||
@@ -267,14 +268,14 @@ export default {
 
     statusPlano(plano) {
 
-    produto.produtoDisponivel = !produto.produtoDisponivel
-    //  HttpRequestUtil.editarProduto(produto).then(produtos => {
+    plano.planoDisponivel = !plano.planoDisponivel
+     HttpRequestUtil.editarPlanos(plano).then(planos => {
 
-    //   });
+      });
     }
+  },
+  mounted() {
+    this.buscarPlanos();
   }
-  // mounted() {
-  //   this.buscarProdutos();
-  // }
 };
 </script>
