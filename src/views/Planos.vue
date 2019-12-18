@@ -42,7 +42,7 @@
         <v-row>
           <v-col cols="12" md="6">
             <v-text-field
-              v-model="plano.planoname"
+              v-model="planoname"
               :rules="usernameRules"
               :counter="100"
               label="Plano"
@@ -52,7 +52,7 @@
 
           <v-col cols="12" md="6">
             <v-text-field
-              v-model="plano.descricao"
+              v-model="descricao"
               :rules="usernameRules"
               :counter="100"
               label="Descrição do plano"
@@ -62,7 +62,7 @@
 
           <v-col cols="12" md="6">
             <v-text-field
-              v-model="plano.valor"
+              v-model="valor"
               :rules="usernameRules"
               :counter="10"
               label="Valor"
@@ -72,7 +72,7 @@
           </v-col>
           <v-col cols="12" md="6">
             <v-text-field
-              v-model="plano.taxa"
+              v-model="taxa"
               :rules="usernameRules"
               label="Taxa"
               required
@@ -82,7 +82,7 @@
         </v-row>
 
         <div class="text-center">
-          <v-btn color="info" class="my-5" @click="incluir()">Salvar</v-btn>
+          <v-btn color="info" class="my-5" @click="salvar()">Salvar</v-btn>
         </div>
       </v-container>
     </v-form>
@@ -117,14 +117,13 @@
             </v-col>
           </v-list-item>
 
-
-          <v-list-item v-for="index in planos" :key="index.title" class="text-start">
+          <v-list-item v-for="plano in planos" :key="plano._id" class="text-start">
             <v-col md="2">
-              <v-list-item-title v-text="index.planoname"></v-list-item-title>​
+              <v-list-item-title v-text="plano.planoname"></v-list-item-title>​
             </v-col>
 
             <v-col md="3">
-              <v-list-item-title v-text="index.descricao"></v-list-item-title>​
+              <v-list-item-title v-text="plano.descricao"></v-list-item-title>​
             </v-col>
 
             <!-- <v-col md="2">
@@ -135,13 +134,13 @@
 
             <!-- <v-col md="1">
               <v-list-item-title>R$ {{(index.valor).toFixed(2)}}</v-list-item-title>​
-            </v-col> -->
+            </v-col>-->
 
             <v-col md="1">
-              <v-list-item-title v-text="index.valor"></v-list-item-title>​
+              <v-list-item-title v-text="plano.valor"></v-list-item-title>​
             </v-col>
             <v-col md="4">
-              <v-list-item-title v-text="index.taxa"></v-list-item-title>​
+              <v-list-item-title v-text="plano.taxa"></v-list-item-title>​
             </v-col>
 
             <!-- <v-col md="1">
@@ -151,7 +150,7 @@
             <v-col md="1">
               <v-btn icon @click="statusPlano(plano)">
                 <v-icon v-if="plano.planoDisponivel">{{planoDisponivel}}</v-icon>
-                <v-icon v-else>{{planoIndisponvel}}</v-icon>                
+                <v-icon v-else>{{planoIndisponvel}}</v-icon>
               </v-btn>
             </v-col>
             <v-col md="1">
@@ -167,18 +166,23 @@
 </template>
 
 <script>
-import HttpRequestUtil from "@/util/HttpRequestUtil"
+import HttpRequestUtil from "@/util/HttpRequestUtil";
 export default {
   data: () => ({
     indiceTop: 0,
     planoDisponivel: "mdi-cart",
     planoIndisponvel: "mdi-cart-off",
-    plano: {
-      planoname: "",
-      descricao: "",
-      valor: "",
-      taxa: ""
-    },
+    // plano: {
+    //   planoname: "",
+    //   descricao: "",
+    //   valor: "",
+    //   taxa: ""
+    // },
+    planoname: "",
+    descricao: "",
+    valor: "",
+    taxa: "",
+
     planos: [],
     planoEditado: null,
     disponivel: true,
@@ -189,12 +193,32 @@ export default {
   }),
 
   methods: {
-    incluir() {
-      console.log(this.plano);
-      this.planos[this.indiceTop] = this.plano;
-      console.log(this.planos);
-      this.indiceTop++;
-      this.plano = {};
+    // incluir() {
+    //   console.log(this.plano);
+    //   this.planos[this.indiceTop] = this.plano;
+    //   console.log(this.planos);
+    //   this.indiceTop++;
+    //   this.plano = {};
+    // },
+
+    salvar() {
+      let valido = this.validar();
+      if (valido) {
+        let plano = {};
+        // usuario.ativo = this.ativo;
+        plano.planoname = this.planoname;
+        plano.descricao = this.descricao;
+        plano.valor = this.valor;
+        plano.taxa = this.taxa;
+
+        HttpRequestUtil.adicionarPlanos(plano).then(response => {
+          this.planos.push(response);
+          this.salvo = true;
+          this.limpaCampos();
+        });
+      } else {
+        this.naoCadastrado = true;
+      }
     },
     // salvar() {
     //   let ehvalido = this.validar();
@@ -210,10 +234,10 @@ export default {
     //       this.indiceTop++;
     //       // produto.setor = this.setor;
     //       // produto.quantidade = parseFloat(this.quantidade);
-         
-    //       HttpRequestUtil.adicionarPlanos(plano).then(plano => {
-    //         this.planos.push(plano);
-    //       });
+
+    // HttpRequestUtil.adicionarPlanos(plano).then(plano => {
+    //   this.planos.push(plano);
+    // });
     //       this.salvo = true;
     //       this.limparCampos();
     //     } else {
@@ -260,6 +284,7 @@ export default {
     },
     editarPlanos(plano) {
       this.planoEditado = plano;
+      this.planoname = plano.planoname
       this.valor = parseFloat(plano.valor);
       this.descricao = plano.descricao;
       // this.quantidade = parseFloat(plano.quantidade);
@@ -267,11 +292,8 @@ export default {
     },
 
     statusPlano(plano) {
-
-    plano.planoDisponivel = !plano.planoDisponivel
-     HttpRequestUtil.editarPlanos(plano).then(planos => {
-
-      });
+      plano.planoDisponivel = !plano.planoDisponivel;
+      HttpRequestUtil.editarPlanos(plano).then(planos => {});
     }
   },
   mounted() {
