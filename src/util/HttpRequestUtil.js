@@ -8,7 +8,7 @@ export default {
         return axios.get(API_URL + "/plano").then(plano => plano.data)
     },
 
-    async editarPlanos(plano){
+    async editarPlano(plano){
         return axios.put(API_URL + "/plano", plano ).then (plano => plano.data)
     },
 

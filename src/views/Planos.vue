@@ -71,13 +71,7 @@
             ></v-text-field>
           </v-col>
           <v-col cols="12" md="6">
-            <v-text-field
-              v-model="taxa"
-              :rules="usernameRules"
-              label="Taxa"
-              required
-              type="text"
-            ></v-text-field>
+            <v-text-field v-model="taxa" :rules="usernameRules" label="Taxa" required type="text"></v-text-field>
           </v-col>
         </v-row>
 
@@ -154,7 +148,7 @@
               </v-btn>
             </v-col>
             <v-col md="1">
-              <v-btn icon @click="editarPlanos(plano)">
+              <v-btn icon @click="editarPlano(plano)">
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
             </v-col>
@@ -203,21 +197,40 @@ export default {
 
     salvar() {
       let valido = this.validar();
+      
       if (valido) {
-        let plano = {};
-        // usuario.ativo = this.ativo;
-        plano.planoname = this.planoname;
-        plano.descricao = this.descricao;
-        plano.valor = this.valor;
-        plano.taxa = this.taxa;
+        if (this.planoEditado == null) {
+          let plano = {}
+          
+          // usuario.ativo = this.ativo;
+          plano.planoname = this.planoname;
+          plano.descricao = this.descricao;
+          plano.valor = this.valor;
+          plano.taxa = this.taxa;
+          plano.status = this.disponivel;
 
-        HttpRequestUtil.adicionarPlanos(plano).then(response => {
-          this.planos.push(response);
+          HttpRequestUtil.adicionarPlanos(plano).then(plano => {
+            this.planos.push(plano);
+            
+            // this.limpaCampos();
+          });
           this.salvo = true;
-          this.limpaCampos();
-        });
-      } else {
-        this.naoCadastrado = true;
+        } else {
+          //
+          this.planoEditado.planoname = this.planoname;
+          this.planoEditado.descricao = this.descricao;
+          this.planoEditado.valor = this.valor;
+          this.planoEditado.taxa = this.taxa;
+          this.planoEditado.status = this.disponivel;
+
+           HttpRequestUtil.editarPlano(this.planoEditado).then(
+              planos => {}
+            );
+            this.editado = true;
+            this.planoEditado = null;
+          
+        }
+        this.limparCampos()
       }
     },
     // salvar() {
@@ -282,9 +295,9 @@ export default {
       }
       return true;
     },
-    editarPlanos(plano) {
+    editarPlano(plano) {
       this.planoEditado = plano;
-      this.planoname = plano.planoname
+      this.planoname = plano.planoname;
       this.valor = parseFloat(plano.valor);
       this.descricao = plano.descricao;
       // this.quantidade = parseFloat(plano.quantidade);
@@ -293,7 +306,7 @@ export default {
 
     statusPlano(plano) {
       plano.planoDisponivel = !plano.planoDisponivel;
-      HttpRequestUtil.editarPlanos(plano).then(planos => {});
+      HttpRequestUtil.editarPlano(plano).then(planos => {});
     }
   },
   mounted() {
