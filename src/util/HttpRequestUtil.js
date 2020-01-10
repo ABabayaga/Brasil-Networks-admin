@@ -29,4 +29,11 @@ export default {
     async mudarStatus(usuario) {
         return axios.put(API_URL + "/usuarios", usuario).then(usuario => usuario.data);
     },
+
+    //Login
+    async autenticar(usuario) {
+        return axios
+            .post(API_URL + "/autenticar", usuario)
+            .then(autenticar => autenticar.data);
+    },
 }

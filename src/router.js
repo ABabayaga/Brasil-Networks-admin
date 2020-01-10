@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Planos from './views/Planos.vue'
 import Usuario from './views/Usuario.vue'
+import Login from './views/Login.vue'
 // import Whatsapp from './views/Whatsapp.vue'
 
 Vue.use(Router)
@@ -14,31 +15,29 @@ export default new Router({
   routes: [{
 
 
-      path: '/home',
-      name: 'Home',
-      component: Home
-    },
-    {
+    path: '/home',
+    name: 'Home',
+    component: Home
+  },
+  {
 
 
-      path: '/planos',
-      name: 'planos',
-      component: Planos
-    },
-    {
+    path: '/planos',
+    name: 'planos',
+    component: Planos
+  },
+  {
 
 
-      path: '/usuario',
-      name: 'usuario',
-      component: Usuario
-    },
-    // {
+    path: '/usuario',
+    name: 'usuario',
+    component: Usuario
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
+  }
 
-
-    //   path: '/whatsapp',
-    //   name: 'whatsapp',
-    //   component: Whatsapp
-    // }
-  
   ]
 })
