@@ -1,5 +1,6 @@
 <template>
   <v-app id="inspire">
+    
     <v-navigation-drawer
       v-model="drawer"
       :clipped="$vuetify.breakpoint.lgAndUp"
@@ -75,6 +76,9 @@
       </v-list>
     </v-navigation-drawer>
 
+   
+   
+   
     <v-content>
       <router-view />
     </v-content>
@@ -96,8 +100,11 @@
       </v-toolbar-title>
       
       <v-spacer />
+
+      
       
     </v-app-bar>
+   
    
     
     
@@ -122,14 +129,19 @@
       },
       {
         title: "Planos",
-        icon: "mdi-account",
+        icon: " mdi-file-document-box",
         route: "/planos"
       },
       {
-        title: "Central",
+        title: "Usuário",
         icon: "mdi-account",
-        route: "/central"
-      }
+        route: "/usuario"
+      },
+      // {
+      //   title: "Whatsapp",
+      //   icon: "mdi-account",
+      //   route: "/whatsapp"
+      // }
       ],
     }),
   }

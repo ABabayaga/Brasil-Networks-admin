@@ -64,10 +64,10 @@
             <v-text-field
               v-model="valor"
               :rules="usernameRules"
-              :counter="10"
+              :counter="20"
               label="Valor"
               required
-              type="number"
+              type="text"
             ></v-text-field>
           </v-col>
           <v-col cols="12" md="6">
@@ -120,26 +120,12 @@
               <v-list-item-title v-text="plano.descricao"></v-list-item-title>​
             </v-col>
 
-            <!-- <v-col md="2">
-              <v-list-item-avatar>
-                <v-img :src="produto.imagem"></v-img>
-              </v-list-item-avatar>
-            </v-col>-->
-
-            <!-- <v-col md="1">
-              <v-list-item-title>R$ {{(index.valor).toFixed(2)}}</v-list-item-title>​
-            </v-col>-->
-
             <v-col md="1">
               <v-list-item-title v-text="plano.valor"></v-list-item-title>​
             </v-col>
             <v-col md="4">
               <v-list-item-title v-text="plano.taxa"></v-list-item-title>​
             </v-col>
-
-            <!-- <v-col md="1">
-              <v-list-item-title v-text="produto.quantidade"></v-list-item-title>​
-            </v-col>-->
 
             <v-col md="1">
               <v-btn icon @click="statusPlano(plano)">
@@ -155,7 +141,11 @@
           </v-list-item>
         </v-list>
       </v-card>
-    </v-col>
+   </v-col>
+
+  
+
+
   </div>
 </template>
 
@@ -187,21 +177,13 @@ export default {
   }),
 
   methods: {
-    // incluir() {
-    //   console.log(this.plano);
-    //   this.planos[this.indiceTop] = this.plano;
-    //   console.log(this.planos);
-    //   this.indiceTop++;
-    //   this.plano = {};
-    // },
-
     salvar() {
       let valido = this.validar();
-      
+
       if (valido) {
         if (this.planoEditado == null) {
-          let plano = {}
-          
+          let plano = {};
+
           // usuario.ativo = this.ativo;
           plano.planoname = this.planoname;
           plano.descricao = this.descricao;
@@ -211,7 +193,7 @@ export default {
 
           HttpRequestUtil.adicionarPlanos(plano).then(plano => {
             this.planos.push(plano);
-            
+
             // this.limpaCampos();
           });
           this.salvo = true;
@@ -223,60 +205,20 @@ export default {
           this.planoEditado.taxa = this.taxa;
           this.planoEditado.status = this.disponivel;
 
-           HttpRequestUtil.editarPlano(this.planoEditado).then(
-              planos => {}
-            );
-            this.editado = true;
-            this.planoEditado = null;
-          
+          HttpRequestUtil.editarPlano(this.planoEditado).then(planos => {});
+          this.editado = true;
+          this.planoEditado = null;
         }
-        this.limparCampos()
+        this.limparCampos();
       }
     },
-    // salvar() {
-    //   let ehvalido = this.validar();
-    //   if (ehvalido) {
-    //     if (this.planoEditado == null) {
-    //       let plano = {};
-
-    //       this.planos[this.indiceTop].planoname = this.planoname;
-    //       this.planos[this.indiceTop].descricao = this.descricao;
-    //       this.planos[this.indiceTop].valor = parseFloat(this.valor);
-    //       this.planos[this.indiceTop].taxa = this.taxa;
-    //        this.planos[this.indiceTop].status = this.disponivel
-    //       this.indiceTop++;
-    //       // produto.setor = this.setor;
-    //       // produto.quantidade = parseFloat(this.quantidade);
-
-    // HttpRequestUtil.adicionarPlanos(plano).then(plano => {
-    //   this.planos.push(plano);
-    // });
-    //       this.salvo = true;
-    //       this.limparCampos();
-    //     } else {
-    //       this.planoEditado.planoname = this.planoname;
-    //       this.planoEditado.descricao = this.descricao;
-    //       this.planoEditado.valor = parseFloat(this.valor);
-    //       // this.planoEditado.quantidade = parseFloat(this.quantidade);
-    //       this.planoEditado.taxa = this.taxa;
-    //       // this.produtoEditado.setor = this.setor;
-    //       HttpRequestUtil.editarPlanos(this.planoEditado).then(
-    //         planos => {}
-    //       );
-    //       this.editado = true;
-    //       this.planoEditado = null;
-    //     }
-    //   }
-    //   console.log(this.planos);
-    // },
+   
     limparCampos() {
       this.planoname = "";
       this.descricao = "";
       this.valor = "";
       this.taxa = "";
-      // this.imagem = ""
-      // this.marca = ""
-      // this.setor = this.setor;
+   
     },
     buscarPlanos() {
       HttpRequestUtil.buscarPlanos().then(planos => {
