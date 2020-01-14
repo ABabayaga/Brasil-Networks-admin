@@ -64,56 +64,105 @@
       <v-content>
         <router-view />
       </v-content>
-
-      
     </v-app>
 
-<v-app v-else>
-    <v-container class="fill-height" fluid>
-      <v-row align="center" justify="center">
-        <v-col cols="12" sm="8" md="4">
-          <v-card class="elevation-12">
-            <v-toolbar color="amber" flat>
-              <v-toolbar-title>Login Brasil Networks</v-toolbar-title>
-              <div class="flex-grow-1"></div>
-            </v-toolbar>
-            <v-card-text>
-              <v-form>
-                <v-text-field
-                  label="Username"
-                  v-model="username"
-                  prepend-icon="mdi-account"
-                  type="text"
-                  color="amber"
-                ></v-text-field>
+    <!-- <template class="pt-5">
+      <v-app>
+        <v-card width="300px" class="pt-5 mx-auto" max-width="400">
+          <v-toolbar color="blue" flat>
+            <v-toolbar-title>Login Brasil Networks</v-toolbar-title>
+            <div class="flex-grow-1"></div>
+          </v-toolbar>
+          <v-card-text>
+            <v-form>
+              <v-text-field
+                label="Username"
+                v-model="username"
+                prepend-icon="mdi-account"
+                type="text"
+                color="amber"
+              ></v-text-field>
 
-                <v-text-field
-                  id="password"
-                  label="Password"
-                  v-model="password"
-                  prepend-icon="mdi-lock"
-                  type="password"
-                  color="amber"
-                ></v-text-field>
-              </v-form>
-            </v-card-text>
-            <v-card-actions>
-              <div class="flex-grow-1"></div>
-              <v-btn color="amber" @click="autenticar">Login</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-app>
+              <v-text-field
+                id="password"
+                label="Password"
+                v-model="password"
+                prepend-icon="mdi-lock"
+                type="password"
+                color="amber"
+              ></v-text-field>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <div class="flex-grow-1"></div>
+            <v-btn color="blue" @click="autenticar">Login</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-app>
+    </template>-->
+
+    <template>
+      <v-content>
+        <v-container fill-height fluid>
+          <v-layout  align-center justify-center>
+            <v-flex xs12 sm6 offset-sm4>
+              <v-card class="elevation-12" width="420px">
+                <v-toolbar color="general">
+                  <v-toolbar-title>Admin Panel</v-toolbar-title>
+                  <v-spacer />
+                </v-toolbar>
+                <v-card-text>
+                  <v-form>
+                    <v-text-field
+                      label="Username"
+                      v-model="username"
+                      :rules="[() => !!username || 'This field is required']"
+                      prepend-icon="mdi-account"
+                      
+                      required
+                    />
+                    <v-text-field
+                      id="password"
+                      label="Password"
+                      v-model="password"
+                      :rules="[() => !!password || 'This field is required']"
+                      :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                      :type="showPassword ? 'text' : 'password'"
+                      prepend-icon="mdi-lock"
+                      placeholder="*********"
+                      counter
+                      required
+                      @keydown.enter="login"
+                      @click:append="showPassword = !showPassword"
+                    />
+                  </v-form>
+                </v-card-text>
+                <v-divider class="mt-5" />
+                <v-card-actions>
+                  <v-spacer />
+                  <v-btn align-center justify-center color="general" @click="autenticar">Login</v-btn>
+                </v-card-actions>
+                <v-snackbar v-model="snackbar" :color="color" :top="true">
+                  {{ errorMessages }}
+                  <v-btn dark flat @click="snackbar = false">Close</v-btn>
+                </v-snackbar>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-content>
+    </template>
+  </div>
+</template>
 
   </div>
 </template>
 
 <script>
-import HttpRequestUtil from "@/util/HttpRequestUtil"
+import HttpRequestUtil from "@/util/HttpRequestUtil";
 
 export default {
+  layout: "blank-layout",
   props: {
     source: String
   },
@@ -123,6 +172,14 @@ export default {
     username: "",
     password: "",
     logado: false,
+
+    //  username: '',
+    //   password: '',
+    //   errorMessages: 'Incorrect login info',
+    //   snackbar: false,
+    //   color: 'general',
+      showPassword: false,
+
     items: [
       {
         title: "Home",
@@ -139,7 +196,6 @@ export default {
         icon: "mdi-account",
         route: "/usuario"
       }
-      
     ]
   }),
   methods: {
@@ -171,29 +227,38 @@ export default {
       let lsUsuario = null;
       lsUsuario = localStorage.getItem("logado");
       if (lsUsuario == null) {
-        this.logado = false
-      }else{
-        this.logado = true
+        this.logado = false;
+      } else {
+        this.logado = true;
       }
-      
     }
-  }
-  ,
+  },
   mounted() {
     this.buscarUsuarioLS();
+  },
+  login: function() {
+    let username = this.username;
+    let password = this.password;
+    this.$store
+      .dispatch("login", { username, password })
+      .then(() => this.$router.push("/dashboard"))
+      .catch(err => {
+        console.log(err);
+        this.snackbar = true;
+      });
+  },
+  metaInfo() {
+    return {
+      title: "Super Secret | Login"
+    };
   }
 };
 </script>
 
-<style>
-#keep .v-navigation-drawer__border {
-  display: none;
-}
-a {
-  text-align: center;
-  font-size: 20pt;
-  font-family: sans-serif;
-  font-weight: bold;
-  color: #2c3e50;
+<style lang="scss">
+@import "@/styles/index.scss";
+/* Remove in 1.2 */
+.v-datatable thead th.column.sortable i {
+  vertical-align: unset;
 }
 </style>
