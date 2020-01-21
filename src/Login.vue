@@ -41,6 +41,7 @@
 
 <script>
 import HttpRequestUtil from "@/util/HttpRequestUtil";
+
 export default {
   props: {
     source: String
@@ -56,6 +57,7 @@ export default {
         usuario.username = this.username
         usuario.senha = this.password
         usuario.tipo = "ADMIN"
+      
       HttpRequestUtil.autenticar(usuario).then(usuario => {
         if(usuario == "Usuário ou senha inválidos!"){
           alert("usuário invalido")

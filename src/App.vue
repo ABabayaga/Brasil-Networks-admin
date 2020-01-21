@@ -66,7 +66,7 @@
       </v-content>
     </v-app>
 
-    <!-- <template class="pt-5">
+    <template class="pt-5">
       <v-app>
         <v-card width="300px" class="pt-5 mx-auto" max-width="400">
           <v-toolbar color="blue" flat>
@@ -99,62 +99,9 @@
           </v-card-actions>
         </v-card>
       </v-app>
-    </template>-->
-
-    <template>
-      <v-content>
-        <v-container fill-height fluid>
-          <v-layout  align-center justify-center>
-            <v-flex xs12 sm6 offset-sm4>
-              <v-card class="elevation-12" width="420px">
-                <v-toolbar color="general">
-                  <v-toolbar-title>Admin Panel</v-toolbar-title>
-                  <v-spacer />
-                </v-toolbar>
-                <v-card-text>
-                  <v-form>
-                    <v-text-field
-                      label="Username"
-                      v-model="username"
-                      :rules="[() => !!username || 'This field is required']"
-                      prepend-icon="mdi-account"
-                      
-                      required
-                    />
-                    <v-text-field
-                      id="password"
-                      label="Password"
-                      v-model="password"
-                      :rules="[() => !!password || 'This field is required']"
-                      :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                      :type="showPassword ? 'text' : 'password'"
-                      prepend-icon="mdi-lock"
-                      placeholder="*********"
-                      counter
-                      required
-                      @keydown.enter="login"
-                      @click:append="showPassword = !showPassword"
-                    />
-                  </v-form>
-                </v-card-text>
-                <v-divider class="mt-5" />
-                <v-card-actions>
-                  <v-spacer />
-                  <v-btn align-center justify-center color="general" @click="autenticar">Login</v-btn>
-                </v-card-actions>
-                <v-snackbar v-model="snackbar" :color="color" :top="true">
-                  {{ errorMessages }}
-                  <v-btn dark flat @click="snackbar = false">Close</v-btn>
-                </v-snackbar>
-              </v-card>
-            </v-flex>
-          </v-layout>
-        </v-container>
-      </v-content>
     </template>
-  </div>
-</template>
 
+    
   </div>
 </template>
 
@@ -204,6 +151,7 @@ export default {
       usuario.username = this.username;
       usuario.senha = this.password;
       usuario.tipo = "ADMIN";
+      
       HttpRequestUtil.autenticar(usuario).then(usuarioAut => {
         if (JSON.stringify(usuarioAut[0]) != undefined) {
           if (
@@ -235,30 +183,19 @@ export default {
   },
   mounted() {
     this.buscarUsuarioLS();
-  },
-  login: function() {
-    let username = this.username;
-    let password = this.password;
-    this.$store
-      .dispatch("login", { username, password })
-      .then(() => this.$router.push("/dashboard"))
-      .catch(err => {
-        console.log(err);
-        this.snackbar = true;
-      });
-  },
-  metaInfo() {
-    return {
-      title: "Super Secret | Login"
-    };
   }
 };
 </script>
 
-<style lang="scss">
-@import "@/styles/index.scss";
-/* Remove in 1.2 */
-.v-datatable thead th.column.sortable i {
-  vertical-align: unset;
+<style>
+#keep .v-navigation-drawer__border {
+  display: none;
+}
+a {
+  text-align: center;
+  font-size: 20pt;
+  font-family: sans-serif;
+  font-weight: bold;
+  color: #2c3e50;
 }
 </style>
